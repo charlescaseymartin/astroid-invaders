@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 
-export const handleWebSocketServer = (socketServer: Server) => {
+export const webSocketServerHandler = (socketServer: Server) => {
     socketServer.on('connection', (socket) => {
         socket.on('disconnect', () => {
             console.log('user disconnected!');

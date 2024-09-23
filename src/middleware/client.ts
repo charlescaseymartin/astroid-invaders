@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { pageRoutes } from '@client/src/routes';
 import { RouteNotFoundError } from '../utils/errors';
 
-export const handleClientSideRouting = (
+export const clientSideRoutingHandler = (
     req: Request,
     res: Response,
     next: NextFunction
