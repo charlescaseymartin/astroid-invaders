@@ -12,5 +12,5 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     console.error(err);
     const isClientError = err instanceof CustomError;
     const clientError = isClientError ? errorToResponse(err) : errorToResponse(new CustomError());
-    return res.status(500).send({ error: clientError });
+    return res.status(clientError.status).send(clientError.message);
 }

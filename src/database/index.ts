@@ -10,3 +10,12 @@ export const database = new DataSource({
     subscribers: [],
 });
 
+export const initializeDatabase = async (): Promise<DataSource | undefined> => {
+    try {
+        console.log('Initializing database...');
+        await database.initialize();
+        return database;
+    } catch (err) {
+        console.error('Database initialization error!', err);
+    }
+}

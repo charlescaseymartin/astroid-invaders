@@ -1,7 +1,10 @@
 import { Server } from 'socket.io';
 
-export const webSocketServerHandler = (socketServer: Server) => {
-    socketServer.on('connection', (socket) => {
+export const webSocketServerHandler = (io: Server) => {
+    io.on('connection', (socket) => {
+        console.log('Websocket connection was made!');
+        socket.emit('hello', 'Welcome To Astroid Invaders!');
+
         socket.on('disconnect', () => {
             console.log('user disconnected!');
         });

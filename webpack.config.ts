@@ -8,7 +8,10 @@ module.exports = {
     mode: 'production',
     externals: [nodeExternals()],
     resolve: {
-        extensions: ['.ts', '.tsx']
+        extensions: ['.ts', '.tsx'],
+        alias: {
+            '@client': path.resolve(__dirname, 'client'),
+        },
     },
     module: {
         rules: [

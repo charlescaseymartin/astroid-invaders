@@ -15,7 +15,6 @@ export const clientSideRoutingHandler = (
         try {
             const filePath = path.resolve(__dirname, 'build', 'index.html')
             let indexFileData = fs.readFileSync(filePath, 'utf8');
-            console.log({ indexFileData })
             let title = 'Resource Not Found';
             let description = 'The requested resource could not be found.';
             const page = pageRoutes.find((route) => req.path == route.path)
