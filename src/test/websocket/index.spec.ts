@@ -1,4 +1,4 @@
-import { io, type Socket } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { initializeApp } from '../../index';
 import { DataSource } from 'typeorm';
 import { ExpressServerType } from '../../types';
