@@ -15,7 +15,10 @@ describe('Testing Websocket:', () => {
             if (initApp) {
                 server = initApp.app.listen(port);
                 datasource = initApp.db;
-                clientSocket = io(`http://localhost:${port}`, { autoConnect: false });
+                clientSocket = io(`http://localhost:${port}`, {
+                    autoConnect: false,
+                    transports: ['webSocket'],
+                });
             }
         } catch (err) {
             console.error(err);
