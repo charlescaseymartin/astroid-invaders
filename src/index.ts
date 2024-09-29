@@ -3,21 +3,22 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import path from 'path';
 import cors from 'cors';
-import express, { Application } from 'express';
-import { createServer } from 'node:http';
+import express from 'express';
+import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { DataSource } from 'typeorm';
 import { initializeDatabase } from './database';
 import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
 import { webSocketServerHandler } from './websocket';
+import { ExpressServerType } from './types';
 
 export type InitializeAppType = {
-    app: Application;
+    server: ExpressServerType;
     db: DataSource;
 }
 
-const initialExpressServer = () => {
+const initialExpressServer = (): ExpressServerType => {
     const app = express();
     const server = createServer(app);
     const io = new Server(server);
@@ -32,7 +33,7 @@ const initialExpressServer = () => {
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));
     }
-    return app;
+    return server;
 }
 
 export const initializeApp = async (): Promise<InitializeAppType | undefined> => {
@@ -40,7 +41,7 @@ export const initializeApp = async (): Promise<InitializeAppType | undefined> =>
         let result: InitializeAppType = {} as InitializeAppType;
         const database = await initializeDatabase();
         if (database) result.db = database;
-        result.app = initialExpressServer();
+        result.server = initialExpressServer();
         return result;
     } catch (err) {
         console.error('Application initialization error!', err);

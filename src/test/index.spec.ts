@@ -8,10 +8,13 @@ describe('Testing application routes:', () => {
     let datasource: DataSource;
 
     beforeAll(async () => {
+        jest.spyOn(console, 'error');
+        // @ts-ignore
+        console.error.mockImplementation(() => null);
         try {
             const initApp = await initializeApp();
             if (initApp) {
-                server = initApp.app.listen(4723);
+                server = initApp.server.listen(4723);
                 datasource = initApp.db;
             }
         } catch (err) {
@@ -32,5 +35,7 @@ describe('Testing application routes:', () => {
     afterAll(() => {
         server.close();
         datasource.destroy();
+        // @ts-ignore
+        console.error.mockRestore();
     });
 });

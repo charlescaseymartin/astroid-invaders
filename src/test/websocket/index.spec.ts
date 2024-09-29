@@ -1,39 +1,40 @@
 import { io, Socket } from 'socket.io-client';
+import { ExpressServerType } from '../../types';
 import { initializeApp } from '../../index';
 import { DataSource } from 'typeorm';
-import { ExpressServerType } from '../../types';
 
 describe('Testing Websocket:', () => {
     const port = 4723;
     let server: ExpressServerType;
-    let datasource: DataSource;
+    let database: DataSource;
     let clientSocket: Socket;
 
-    beforeAll(async () => {
-        try {
-            const initApp = await initializeApp();
-            if (initApp) {
-                server = initApp.app.listen(port);
-                datasource = initApp.db;
-                clientSocket = io(`http://localhost:${port}`, {
-                    autoConnect: false,
-                    transports: ['webSocket'],
-                });
-            }
-        } catch (err) {
-            console.error(err);
-        }
+    beforeAll((done) => {
+        initializeApp()
+            .then((res) => {
+                if (res) {
+                    server = res.server;
+                    database = res.db;
+                    server.listen(port, () => {
+                        clientSocket = io(`http://localhost:${port}`);
+                        clientSocket.on('connect', done)
+                    });
+                }
+            })
+            .catch((err) => console.error(err));
     });
 
-    test('On connection: Should return welcome message', () => {
-        clientSocket.connect();
-        clientSocket.on('hello', (message) => console.log(message));
-        console.log('--> after connection');
+    afterAll((done) => {
+        new Promise((resolve, _reject) => {
+            resolve(clientSocket.disconnect());
+        }).then(() => {
+            server.close();
+            database.destroy();
+            done();
+        })
     });
 
-    afterAll(() => {
-        server.close();
-        clientSocket.disconnect();
-        datasource.destroy();
+    test('Test connection: clientSocket.connected should be true.', () => {
+        expect(clientSocket.connected).toBe(true);
     });
 });
