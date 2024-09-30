@@ -10,6 +10,17 @@ export const webSocketServerHandler = (io: Server) => {
 
         socket.on('singleplayer', () => {
             socket.emit('singleplayer:connected', 'connected to singleplayer channel');
+            // create singleplayer lobby
+            // create player
+            // create player jwt cookie
+            // send jwt to player
+            // get player name
+            // get player pilot
+            // send initial game state
+            // get player keystrokes
+            // update game state
+            // send updated game state
+            //
         });
 
         socket.on('multiplayer', () => {
