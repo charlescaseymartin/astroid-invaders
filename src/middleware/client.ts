@@ -13,11 +13,16 @@ export const clientSideRoutingHandler = (
         next();
     } else {
         try {
+            // if (req.path !== '' || req.path !== '' || req.path !== '') {
+            // }
+
+            console.log('path:', req.path);
+
             const filePath = path.resolve(__dirname, 'build', 'index.html')
             let indexFileData = fs.readFileSync(filePath, 'utf8');
             let title = 'Resource Not Found';
             let description = 'The requested resource could not be found.';
-            const page = pageRoutes.find((route) => req.path == route.path)
+            const page = pageRoutes.find((route) => req.path == route.path);
 
             if (page) {
                 title = page.title;

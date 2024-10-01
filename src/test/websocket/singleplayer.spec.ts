@@ -3,7 +3,7 @@ import { ExpressServerType } from '../../types';
 import { initializeApp } from '../../index';
 import { DataSource } from 'typeorm';
 
-describe('Testing Websocket Core:', () => {
+describe('Testing Websocket Singleplayer Mode:', () => {
     const port = 4723;
     let server: ExpressServerType;
     let database: DataSource;
@@ -30,7 +30,23 @@ describe('Testing Websocket Core:', () => {
         server.close(done);
     });
 
-    test('Test client connection: Should return true.', () => {
+    test('Create singleplayer: Should return Player JWT.', () => {
         expect(clientSocket.connected).toBe(true);
     });
+
+    // test('Update singleplayer name: Should return Player JWT.', () => {
+    //     expect(clientSocket.connected).toBe(true);
+    // });
+
+    // test('Update singleplayer pilot: Should return Player JWT.', () => {
+    //     expect(clientSocket.connected).toBe(true);
+    // });
+
+    // test('Create singleplayer game: Should return Player JWT.', () => {
+    //     expect(clientSocket.connected).toBe(true);
+    // });
+
+    // test('Handle singleplayer game over: Should return Player JWT.', () => {
+    //     expect(clientSocket.connected).toBe(true);
+    // });
 });

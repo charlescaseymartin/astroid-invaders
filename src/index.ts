@@ -10,7 +10,7 @@ import { DataSource } from 'typeorm';
 import { initializeDatabase } from './database';
 import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
-import { webSocketServerHandler } from './websocket';
+import websocket from './websocket';
 import { ExpressServerType } from './types';
 
 export type InitializeAppType = {
@@ -29,7 +29,7 @@ const initialExpressServer = (): ExpressServerType => {
     app.use(clientSideRoutingHandler);
     app.use(express.static(path.join(__dirname, 'build')));
     app.use(errorHandler);
-    webSocketServerHandler(io);
+    websocket(io);
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));
     }

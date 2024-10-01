@@ -2,23 +2,28 @@
   "name": "astroid-invaders",
   "version": "1.0.0",
   "description": "Astroid Invaders is a multiplayer game base off of Space Invaders that gives player a chance to build a team of upto four pilots each with their own special powerups and abilities.",
-  "main": "index.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "cd ./client && yarn build && cd ../ && webpack",
     "start": "node ./dist/index.js",
     "clean": "rm -rf ./dist ./client/build",
-    "start:prod": "yarn prod:clean && yarn build && yarn start",
+    "start:prod": "yarn clean && yarn build && yarn start",
     "start:dev": "concurrently \"nodemon ./src/index.ts\" \"cd ./client && npm start\"",
     "test:jest": "jest --forceExit --detectOpenHandles --maxWorkers=1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "Astroid Invaders",
+    "Web-based game",
+    "Space Invaders"
+  ],
+  "author": "Charles-Casey Martin",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.1",
     "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
     "socket.io": "^4.7.5",
     "sqlite3": "^5.1.7",
