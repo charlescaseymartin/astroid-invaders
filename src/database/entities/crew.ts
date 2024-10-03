@@ -4,21 +4,27 @@ import {
     Entity,
     JoinColumn,
     OneToOne,
+    CreateDateColumn,
     PrimaryGeneratedColumn,
-
 } from 'typeorm';
 import Player from './player';
+import { IsUUID, IsString, IsNumber, IsDate, MaxLength } from 'class-validator';
+
 
 @Entity()
 class PilotCrew extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
+    @IsUUID()
     id: string;
 
     @Column({ type: 'varchar', length: 150 })
+    @IsString()
+    @MaxLength(150)
     name: string;
 
     @Column('integer')
-    totalScore: number;
+    @IsNumber()
+    score: number;
 
     @OneToOne(() => Player)
     @JoinColumn()
@@ -35,6 +41,10 @@ class PilotCrew extends BaseEntity {
     @OneToOne(() => Player)
     @JoinColumn()
     playerFour: Player;
+
+    @CreateDateColumn()
+    @IsDate()
+    dateCreated: Date;
 }
 
 export default PilotCrew;

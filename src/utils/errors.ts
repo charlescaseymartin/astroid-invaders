@@ -1,3 +1,5 @@
+import { RequestHandler, Request, Response, NextFunction } from "express";
+
 type ErrorData = { [key: string]: any };
 
 export class CustomError extends Error {
@@ -33,4 +35,14 @@ export class InvalidTokenError extends CustomError {
   constructor(message = 'Authentication token is invalid.') {
     super(message, 'INVALID_TOKEN', 401);
   }
+}
+
+export const errorWrapper = async (requestHandler: RequestHandler) => {
+    return async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+        try {
+            return await requestHandler(req, res, next);
+        } catch (err) {
+            next(err);
+        }
+    };
 }

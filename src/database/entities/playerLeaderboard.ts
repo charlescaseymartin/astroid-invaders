@@ -1,10 +1,12 @@
 import { Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import Player from './player';
+import { IsNumber } from 'class-validator';
 
 
 @Entity()
-class PilotLeaderboard {
+class PlayerLeaderboard {
     @PrimaryColumn()
+    @IsNumber()
     id: number;
 
     @OneToOne(() => Player)
@@ -12,4 +14,4 @@ class PilotLeaderboard {
     player: Player;
 }
 
-export default PilotLeaderboard;
+export default PlayerLeaderboard;

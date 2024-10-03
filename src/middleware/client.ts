@@ -13,8 +13,9 @@ export const clientSideRoutingHandler = (
         next();
     } else {
         try {
-            // if (req.path !== '' || req.path !== '' || req.path !== '') {
-            // }
+            if (req.path !== '/'.toString() || req.path !== '/404'.toString() || req.path !== '/leaderboard'.toString()) {
+                console.log('check for user');
+            }
 
             console.log('path:', req.path);
 

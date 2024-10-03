@@ -12,6 +12,7 @@ import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
 import websocket from './websocket';
 import { ExpressServerType } from './types';
+import { privateRouter, publicRouter } from './routes';
 
 export type InitializeAppType = {
     server: ExpressServerType;
@@ -28,6 +29,8 @@ const initialExpressServer = (): ExpressServerType => {
     app.use(express.urlencoded({ extended: true }));
     app.use(clientSideRoutingHandler);
     app.use(express.static(path.join(__dirname, 'build')));
+    app.use(publicRouter);
+    app.use(privateRouter);
     app.use(errorHandler);
     websocket(io);
     if (process.env.NODE_ENV !== 'test') {

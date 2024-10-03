@@ -1,6 +1,10 @@
-import { Application } from 'express';
+import { Router } from 'express';
 
+export const publicRouter = Router();
+export const privateRouter = Router();
 
-export const attachPrivate = (app: Application) => {
-    app
-}
+publicRouter.post('/player', () => {});
+
+privateRouter.use(() => console.log('authorize user'));
+privateRouter.get('/player', () => {});
+privateRouter.put('/player', () => {});
