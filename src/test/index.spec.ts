@@ -32,9 +32,9 @@ describe('Testing application routes:', () => {
         }
     });
 
-    afterAll(() => {
-        server.close();
+    afterAll((done) => {
         datasource.destroy();
+        server.close(done);
         // @ts-ignore
         console.error.mockRestore();
     });

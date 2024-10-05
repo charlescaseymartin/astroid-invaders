@@ -13,7 +13,6 @@ if (process.env.NODE_ENV == 'development') {
 export const database = new DataSource({
     type: 'sqlite',
     database: configFile,
-    synchronize: true,
     logging: false,
     entities: Object.values(entities),
     migrations: [],
