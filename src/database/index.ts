@@ -1,10 +1,18 @@
+import path from 'path';
 import { DataSource } from 'typeorm';
 import * as entities from './entities';
 
+let configFile = path.resolve(__dirname, 'test.db');
+
+if (process.env.NODE_ENV == 'development') {
+    configFile = path.resolve(__dirname, 'dev.db');
+} else if (process.env.NODE_ENV == 'production') {
+    configFile = path.resolve(__dirname, 'prod.db');
+}
 
 export const database = new DataSource({
     type: 'sqlite',
-    database: './src/database/astroid_invaders.db',
+    database: configFile,
     synchronize: true,
     logging: false,
     entities: Object.values(entities),

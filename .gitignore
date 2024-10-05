@@ -1,4 +1,8 @@
 node_modules
-.env
+.env.dev
+.env.prod
 dist
 coverage
+src/database/prod.db
+src/database/dev.db
+src/database/test.db

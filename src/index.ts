@@ -1,8 +1,8 @@
 import 'module-alias/register';
 import 'reflect-metadata';
-import 'dotenv/config';
 import path from 'path';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -13,6 +13,12 @@ import { errorHandler } from './middleware/errorHandler';
 import websocket from './websocket';
 import { ExpressServerType } from './types';
 import { privateRouter, publicRouter } from './routes';
+
+if (process.env.NODE_ENV !== 'development') {
+    dotenv.config({ path: path.resolve(__dirname, '..', '.env.prod') });
+} else {
+    dotenv.config({ path: path.resolve(__dirname, '..', '.env.dev') });
+}
 
 export type InitializeAppType = {
     server: ExpressServerType;
