@@ -2,13 +2,8 @@ import path from 'path';
 import { DataSource } from 'typeorm';
 import * as entities from './entities';
 
-let configFile = path.resolve(__dirname, 'test.db');
-
-if (process.env.NODE_ENV == 'development') {
-    configFile = path.resolve(__dirname, 'dev.db');
-} else if (process.env.NODE_ENV == 'production') {
-    configFile = path.resolve(__dirname, 'prod.db');
-}
+const env = process.env;
+let configFile = env.NODE_ENV == 'test' ? path.resolve(__dirname, 'test.db') : `${env.DB_PATH}`;
 
 export const database = new DataSource({
     type: 'sqlite',
