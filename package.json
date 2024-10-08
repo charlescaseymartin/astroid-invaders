@@ -9,7 +9,15 @@
     "clean": "rm -rf ./dist ./client/build",
     "start:prod": "NODE_ENV=production yarn clean && yarn build && yarn start",
     "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/index.ts\" \"cd ./client && npm start\"",
-    "test:jest": "jest --forceExit --detectOpenHandles --maxWorkers=1"
+    "test:jest": "jest --forceExit --detectOpenHandles --maxWorkers=1",
+    "typeorm": "NODE_ENV=development typeorm-ts-node-commonjs -d ./src/database/index.ts",
+    "migration:show": "yarn typeorm migration:show",
+    "migration:generate": "yarn typeorm migration:generate",
+    "migration:create": "typeorm migration:create",
+    "migration:run": "typeorm migration:run",
+    "migration:create": "typeorm migration:create",
+    "schema:sync": "typeorm schema:sync",
+    "schema:log": "yarn typeorm schema:log"
   },
   "keywords": [
     "Astroid Invaders",

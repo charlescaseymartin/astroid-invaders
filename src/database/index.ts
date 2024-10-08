@@ -1,18 +1,20 @@
 import path from 'path';
 import { DataSource } from 'typeorm';
-import * as entities from './entities';
+import { initializeEnvVars } from '../env.config';
+
+initializeEnvVars();
 
 const env = process.env;
 let configFile = env.NODE_ENV == 'test' ? path.resolve(__dirname, 'test.db') : `${env.DB_PATH}`;
 
-export const database = new DataSource({
+const database = new DataSource({
     type: 'sqlite',
     database: configFile,
     logging: false,
-    entities: Object.values(entities),
-    migrations: [],
-    subscribers: [],
+    entities: ['./entities/*.ts'],
+    migrations: ['./migrations/*.ts'],
 });
+
 
 export const initializeDatabase = async (): Promise<DataSource | undefined> => {
     try {
@@ -23,3 +25,5 @@ export const initializeDatabase = async (): Promise<DataSource | undefined> => {
         console.error('Database initialization error!', err);
     }
 }
+
+export default database;

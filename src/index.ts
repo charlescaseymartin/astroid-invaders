@@ -2,28 +2,18 @@ import 'module-alias/register';
 import 'reflect-metadata';
 import path from 'path';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { DataSource } from 'typeorm';
 import { initializeDatabase } from './database';
 import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
 import websocket from './websocket';
-import { ExpressServerType } from './types';
+import { ExpressServerType, InitializeAppType } from './types';
 import { privateRouter, publicRouter } from './routes';
+import { initializeEnvVars } from './env.config';
 
-if (process.env.NODE_ENV !== 'development') {
-    dotenv.config({ path: path.resolve(__dirname, '..', '.env.prod') });
-} else {
-    dotenv.config({ path: path.resolve(__dirname, '..', '.env.dev') });
-}
-
-export type InitializeAppType = {
-    server: ExpressServerType;
-    db: DataSource;
-}
+initializeEnvVars();
 
 const initialExpressServer = (): ExpressServerType => {
     const app = express();
@@ -47,7 +37,7 @@ const initialExpressServer = (): ExpressServerType => {
 
 export const initializeApp = async (): Promise<InitializeAppType | undefined> => {
     try {
-        let result: InitializeAppType = {} as InitializeAppType;
+        let result = {} as InitializeAppType;
         const database = await initializeDatabase();
         if (database) result.db = database;
         result.server = initialExpressServer();
