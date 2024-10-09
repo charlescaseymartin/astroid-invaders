@@ -1,10 +1,11 @@
+import { resolve } from 'path';
 import * as dotenv from 'dotenv';
 
 
 export const initializeEnvVars = () => {
-    if (process.env.NODE_ENV !== 'development') {
-        dotenv.config({ path: '../.env.prod' });
+    if (process.env.NODE_ENV == 'production') {
+        dotenv.config({ path: resolve(__dirname, '..', '.env.prod') });
     } else {
-        dotenv.config({ path: '../.env.dev' });
+        dotenv.config({ path: resolve(__dirname, '..', '.env.dev') });
     }
 }

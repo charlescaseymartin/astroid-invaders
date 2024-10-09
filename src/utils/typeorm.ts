@@ -1,5 +1,5 @@
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
-import { database } from '../database';
+import database from '../database';
 import {
     Pilot,
     Enemy,

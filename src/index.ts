@@ -6,14 +6,13 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { initializeDatabase } from './database';
+import { initializeEnvVars } from './env.config';
 import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
 import websocket from './websocket';
 import { ExpressServerType, InitializeAppType } from './types';
 import { privateRouter, publicRouter } from './routes';
-import { initializeEnvVars } from './env.config';
 
-initializeEnvVars();
 
 const initialExpressServer = (): ExpressServerType => {
     const app = express();
@@ -36,6 +35,7 @@ const initialExpressServer = (): ExpressServerType => {
 }
 
 export const initializeApp = async (): Promise<InitializeAppType | undefined> => {
+    initializeEnvVars();
     try {
         let result = {} as InitializeAppType;
         const database = await initializeDatabase();

@@ -1,18 +1,17 @@
-import path from 'path';
+import { resolve } from 'path';
 import { DataSource } from 'typeorm';
 import { initializeEnvVars } from '../env.config';
+import * as entities from './entities';
+
 
 initializeEnvVars();
 
-const env = process.env;
-let configFile = env.NODE_ENV == 'test' ? path.resolve(__dirname, 'test.db') : `${env.DB_PATH}`;
-
 const database = new DataSource({
     type: 'sqlite',
-    database: configFile,
+    database: resolve(__dirname, `${process.env.DB_FILE}`),
     logging: false,
-    entities: ['./entities/*.ts'],
-    migrations: ['./migrations/*.ts'],
+    entities: Object.values(entities),
+    migrations: ['./src/database/migrations/**/*.ts'],
 });
 
 
