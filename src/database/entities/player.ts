@@ -5,10 +5,18 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     OneToOne,
-    JoinColumn
+    JoinColumn,
+    ManyToOne
 } from 'typeorm';
+import {
+    IsUUID,
+    IsString,
+    IsNumber,
+    IsDate,
+    MaxLength
+} from 'class-validator';
 import Pilot from './pilot';
-import { IsUUID, IsString, IsNumber, IsDate, MaxLength } from 'class-validator';
+import Crew from './crew';
 
 
 @Entity()
@@ -29,6 +37,13 @@ class Player extends BaseEntity {
     @OneToOne(() => Pilot)
     @JoinColumn()
     pilot: Pilot;
+
+    @ManyToOne(() => Crew, crew => crew.players)
+    crew: Crew;
+
+    @Column()
+    @IsUUID()
+    crewId: string;
 
     @CreateDateColumn()
     @IsDate()

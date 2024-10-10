@@ -6,13 +6,14 @@ import {
     OneToOne,
     CreateDateColumn,
     PrimaryGeneratedColumn,
+    OneToMany,
 } from 'typeorm';
 import Player from './player';
 import { IsUUID, IsString, IsNumber, IsDate, MaxLength } from 'class-validator';
 
 
 @Entity()
-class PilotCrew extends BaseEntity {
+class Crew extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     @IsUUID()
     id: string;
@@ -30,21 +31,12 @@ class PilotCrew extends BaseEntity {
     @JoinColumn()
     playerOne: Player;
 
-    @OneToOne(() => Player)
-    @JoinColumn()
-    playerTwo: Player;
-
-    @OneToOne(() => Player)
-    @JoinColumn()
-    playerThree: Player;
-
-    @OneToOne(() => Player)
-    @JoinColumn()
-    playerFour: Player;
+    @OneToMany(() => Player, player => player.crew)
+    players: Player[];
 
     @CreateDateColumn()
     @IsDate()
     dateCreated: Date;
 }
 
-export default PilotCrew;
+export default Crew;
