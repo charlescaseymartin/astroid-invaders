@@ -1,23 +1,9 @@
-import { initializeApp } from '../index';
+import { initializeApp } from '../../index';
 import { DataSource } from 'typeorm';
-import { ExpressServerType } from '../types';
-import {
-    Pilot,
-    Enemy,
-    Player,
-    Crew,
-    PlayerLeaderboard,
-    CrewLeaderboard
-} from '../database/entities';
-import {
-    findEntityOrThrow,
-    createEntity,
-    updateEntity,
-    deleteEntity
-} from '../utils/typeorm';
+import { ExpressServerType } from '../../types';
 
 
-describe('Testing database CRUD functions:', () => {
+describe('Testing Player Controller:', () => {
     let app: ExpressServerType;
     let db: DataSource;
 
@@ -33,7 +19,7 @@ describe('Testing database CRUD functions:', () => {
         }
     });
 
-    test('(Pilot) findEntityOrThrow: Should return Pilot entity', async () => {
+    test('', async () => {
        console.log('test');
     });
 

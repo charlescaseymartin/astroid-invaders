@@ -1,4 +1,4 @@
-import { RequestHandler, Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 
 type ErrorData = { [key: string]: any };
 
@@ -37,12 +37,13 @@ export class InvalidTokenError extends CustomError {
   }
 }
 
-export const errorWrapper = async (requestHandler: RequestHandler) => {
-    return async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+export const errorWrapper = (requestHandler: RequestHandler): RequestHandler => {
+    const wrapper: RequestHandler = async (req, res, next) => {
         try {
             return await requestHandler(req, res, next);
         } catch (err) {
             next(err);
         }
     };
+    return wrapper;
 }

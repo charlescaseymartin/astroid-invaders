@@ -22,11 +22,11 @@ const initialExpressServer = (): ExpressServerType => {
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    app.use(clientSideRoutingHandler);
     app.use(express.static(path.join(__dirname, 'build')));
+    app.use(clientSideRoutingHandler);
+    app.use(errorHandler);
     app.use(publicRouter);
     app.use(privateRouter);
-    app.use(errorHandler);
     websocket(io);
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));

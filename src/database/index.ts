@@ -11,7 +11,7 @@ const database = new DataSource({
     database: resolve(__dirname, `${process.env.DB_FILE}`),
     logging: false,
     entities: Object.values(entities),
-    migrations: ['./src/database/migrations/**/*.ts'],
+    migrations: [`${process.env.DB_MIGRATIONS}`],
 });
 
 

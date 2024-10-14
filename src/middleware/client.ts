@@ -1,8 +1,43 @@
 import fs from 'fs';
 import path from 'path';
 import { Request, Response, NextFunction } from 'express';
-import { pageRoutes } from '@client/src/routes';
+//import { pageRoutes } from '@client/src/routes';
 import { RouteNotFoundError } from '../utils/errors';
+
+
+const mainTitle = 'Astroid Indvaders';
+const pageRoutes= [
+    {
+        path: '/',
+        title: `${mainTitle} | Home`,
+        description: `${mainTitle}. A modern multiplayer version of the classic Space Indvaders.`,
+    },
+    {
+        path: '/lobby',
+        title: `${mainTitle} | Lobby`,
+        description: `${mainTitle}. The lobby, where your friends and yourself get to a fleet of pilots.`,
+    },
+    {
+        path: '/pilots',
+        title: `${mainTitle} | Pilots`,
+        description: `${mainTitle}. Select a pilot ship to defend your planet, family and friends.`,
+    },
+    {
+        path: '/game',
+        title: `${mainTitle}`,
+        description: `${mainTitle}. A modern multiplayer version of the classic Space Indvaders.`,
+    },
+    {
+        path: '/leaderboard',
+        title: `${mainTitle} | Leaderboard`,
+        description: `${mainTitle}. Where do you rank in the universe of fallen planets.`,
+    },
+    {
+        path: '/404',
+        title: 'Page Not Found',
+        description: 'The Requested Page Could Not Be Found',
+    },
+]
 
 export const clientSideRoutingHandler = (
     req: Request,
