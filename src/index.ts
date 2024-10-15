@@ -10,7 +10,7 @@ import { initializeEnvVars } from './env.config';
 import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
 import websocket from './websocket';
-import { ExpressServerType, InitializeAppType } from './types';
+import { ExpressServerType, InitializeAppType } from './types/common';
 import { privateRouter, publicRouter } from './routes';
 
 
@@ -25,8 +25,8 @@ const initialExpressServer = (): ExpressServerType => {
     app.use(express.static(path.join(__dirname, 'build')));
     app.use(clientSideRoutingHandler);
     app.use(errorHandler);
-    app.use(publicRouter);
-    app.use(privateRouter);
+    app.use('/api', publicRouter);
+    app.use('/api', privateRouter);
     websocket(io);
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));

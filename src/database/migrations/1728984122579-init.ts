@@ -1,22 +1,21 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-export class Init1728549423000 implements MigrationInterface {
-    name = 'Init1728549423000'
+export class Init1728984122579 implements MigrationInterface {
+    name = 'Init1728984122579'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        // creates tables
         await queryRunner.query(`CREATE TABLE "pilot" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150) NOT NULL, "skin" text NOT NULL, "speed" integer NOT NULL, "attack" integer NOT NULL, "defence" integer NOT NULL)`);
         await queryRunner.query(`CREATE TABLE "enemy" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150) NOT NULL, "skin" text NOT NULL, "speed" integer NOT NULL, "attack" integer NOT NULL, "defence" integer NOT NULL)`);
-        await queryRunner.query(`CREATE TABLE "crew" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150) NOT NULL, "score" integer NOT NULL, "dateCreated" datetime NOT NULL DEFAULT (datetime('now')), "playerOneId" varchar, CONSTRAINT "REL_327d8f435308c24ece4577f554" UNIQUE ("playerOneId"))`);
-        await queryRunner.query(`CREATE TABLE "player" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150) NOT NULL, "score" integer NOT NULL, "crewId" varchar NOT NULL, "dateCreated" datetime NOT NULL DEFAULT (datetime('now')), "pilotId" varchar, CONSTRAINT "REL_4a17c62f50d53adaca697934f5" UNIQUE ("pilotId"))`);
+        await queryRunner.query(`CREATE TABLE "crew" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150), "score" integer NOT NULL, "dateCreated" datetime DEFAULT (datetime('now')), "playerOneId" varchar, CONSTRAINT "REL_327d8f435308c24ece4577f554" UNIQUE ("playerOneId"))`);
+        await queryRunner.query(`CREATE TABLE "player" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150), "score" integer NOT NULL, "crewId" varchar, "dateCreated" datetime DEFAULT (datetime('now')), "pilotId" varchar, CONSTRAINT "REL_4a17c62f50d53adaca697934f5" UNIQUE ("pilotId"))`);
         await queryRunner.query(`CREATE TABLE "player_leaderboard" ("id" integer PRIMARY KEY NOT NULL, "playerId" varchar, CONSTRAINT "REL_9a77a925e819ede297a1e2fbaf" UNIQUE ("playerId"))`);
         await queryRunner.query(`CREATE TABLE "crew_leaderboard" ("id" integer PRIMARY KEY NOT NULL, "crewId" varchar, CONSTRAINT "REL_f33c0766726acb3f2f22a74589" UNIQUE ("crewId"))`);
-        await queryRunner.query(`CREATE TABLE "temporary_crew" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150) NOT NULL, "score" integer NOT NULL, "dateCreated" datetime NOT NULL DEFAULT (datetime('now')), "playerOneId" varchar, CONSTRAINT "REL_327d8f435308c24ece4577f554" UNIQUE ("playerOneId"), CONSTRAINT "FK_327d8f435308c24ece4577f5547" FOREIGN KEY ("playerOneId") REFERENCES "player" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
+        await queryRunner.query(`CREATE TABLE "temporary_crew" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150), "score" integer NOT NULL, "dateCreated" datetime DEFAULT (datetime('now')), "playerOneId" varchar, CONSTRAINT "REL_327d8f435308c24ece4577f554" UNIQUE ("playerOneId"), CONSTRAINT "FK_327d8f435308c24ece4577f5547" FOREIGN KEY ("playerOneId") REFERENCES "player" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
         await queryRunner.query(`INSERT INTO "temporary_crew"("id", "name", "score", "dateCreated", "playerOneId") SELECT "id", "name", "score", "dateCreated", "playerOneId" FROM "crew"`);
         await queryRunner.query(`DROP TABLE "crew"`);
         await queryRunner.query(`ALTER TABLE "temporary_crew" RENAME TO "crew"`);
-        await queryRunner.query(`CREATE TABLE "temporary_player" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150) NOT NULL, "score" integer NOT NULL, "crewId" varchar NOT NULL, "dateCreated" datetime NOT NULL DEFAULT (datetime('now')), "pilotId" varchar, CONSTRAINT "REL_4a17c62f50d53adaca697934f5" UNIQUE ("pilotId"), CONSTRAINT "FK_4a17c62f50d53adaca697934f50" FOREIGN KEY ("pilotId") REFERENCES "pilot" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_c7376343836560c59adfcfbca9e" FOREIGN KEY ("crewId") REFERENCES "crew" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
+        await queryRunner.query(`CREATE TABLE "temporary_player" ("id" varchar PRIMARY KEY NOT NULL, "name" varchar(150), "score" integer NOT NULL, "crewId" varchar, "dateCreated" datetime DEFAULT (datetime('now')), "pilotId" varchar, CONSTRAINT "REL_4a17c62f50d53adaca697934f5" UNIQUE ("pilotId"), CONSTRAINT "FK_4a17c62f50d53adaca697934f50" FOREIGN KEY ("pilotId") REFERENCES "pilot" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_c7376343836560c59adfcfbca9e" FOREIGN KEY ("crewId") REFERENCES "crew" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
         await queryRunner.query(`INSERT INTO "temporary_player"("id", "name", "score", "crewId", "dateCreated", "pilotId") SELECT "id", "name", "score", "crewId", "dateCreated", "pilotId" FROM "player"`);
         await queryRunner.query(`DROP TABLE "player"`);
         await queryRunner.query(`ALTER TABLE "temporary_player" RENAME TO "player"`);

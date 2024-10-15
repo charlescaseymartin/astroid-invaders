@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { ExpressServerType } from '../../types';
+import { ExpressServerType } from '../../types/common';
 import { initializeApp } from '../../index';
 import { DataSource } from 'typeorm';
 

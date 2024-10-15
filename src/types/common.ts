@@ -7,7 +7,7 @@ import {
     Crew,
     PlayerLeaderboard,
     CrewLeaderboard
-} from './database/entities';
+} from '../database/entities';
 
 // Express Types
 export type ExpressServerType = Server<typeof IncomingMessage, typeof ServerResponse>;

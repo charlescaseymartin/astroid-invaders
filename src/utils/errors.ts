@@ -27,7 +27,7 @@ export class EntityNotFoundError extends CustomError {
 
 export class BadUserInputError extends CustomError {
   constructor(errorData: ErrorData) {
-    super('There were validation errors.', 'BAD_USER_INPUT', 400, errorData);
+    super('Bad User Input: There were validation errors.', 'BAD_USER_INPUT', 400, errorData);
   }
 }
 

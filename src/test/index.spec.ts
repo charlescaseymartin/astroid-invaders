@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { initializeApp } from '../index';
 import { DataSource } from 'typeorm';
-import { ExpressServerType } from '../types';
+import { ExpressServerType } from '../types/common';
 
 describe('Testing application routes:', () => {
     let server: ExpressServerType;

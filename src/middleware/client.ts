@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Request, Response, NextFunction } from 'express';
-//import { pageRoutes } from '@client/src/routes';
+import { RequestHandler } from 'express';
 import { RouteNotFoundError } from '../utils/errors';
 
 
@@ -39,20 +38,16 @@ const pageRoutes= [
     },
 ]
 
-export const clientSideRoutingHandler = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const clientSideRoutingHandler: RequestHandler = (req, res, next) => {
     if (/(.ico|.js|.css|.jpg|.png|.svg|.map)$/i.test(req.path)) {
+        next();
+    } else if (req.path.split('/')[1] === 'api') {
         next();
     } else {
         try {
             if (req.path !== '/'.toString() || req.path !== '/404'.toString() || req.path !== '/leaderboard'.toString()) {
                 console.log('check for user');
             }
-
-            console.log('path:', req.path);
 
             const filePath = path.resolve(__dirname, 'build', 'index.html')
             let indexFileData = fs.readFileSync(filePath, 'utf8');

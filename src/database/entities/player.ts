@@ -13,6 +13,7 @@ import {
     IsString,
     IsNumber,
     IsDate,
+    IsOptional,
     MaxLength
 } from 'class-validator';
 import Pilot from './pilot';
@@ -22,30 +23,36 @@ import Crew from './crew';
 @Entity()
 class Player extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
+    @IsOptional()
     @IsUUID()
     id: string;
 
     @Column({ type: 'varchar', length: 150 })
+    @IsOptional()
     @IsString()
     @MaxLength(150)
-    name: string;
+    name?: string;
 
     @Column('integer')
     @IsNumber()
     score: number;
 
     @OneToOne(() => Pilot)
+    @IsOptional()
     @JoinColumn()
-    pilot: Pilot;
+    pilot?: Pilot;
 
     @ManyToOne(() => Crew, crew => crew.players)
-    crew: Crew;
+    @IsOptional()
+    crew?: Crew;
 
     @Column()
+    @IsOptional()
     @IsUUID()
-    crewId: string;
+    crewId?: string;
 
     @CreateDateColumn()
+    @IsOptional()
     @IsDate()
     dateCreated: Date;
 }
