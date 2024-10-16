@@ -11,7 +11,7 @@ import { clientSideRoutingHandler } from './middleware/client';
 import { errorHandler } from './middleware/errorHandler';
 import websocket from './websocket';
 import { ExpressServerType, InitializeAppType } from './types/common';
-import router from './routes';
+import { authorizePlayer } from './controllers/auth';
 
 
 const initialExpressServer = (): ExpressServerType => {
@@ -25,7 +25,7 @@ const initialExpressServer = (): ExpressServerType => {
     app.use(express.static(path.join(__dirname, 'build')));
     app.use(clientSideRoutingHandler);
     app.use(errorHandler);
-    app.use(router);
+    app.get('/auth', authorizePlayer);
     websocket(io);
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));

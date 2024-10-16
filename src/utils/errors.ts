@@ -1,4 +1,3 @@
-import { RequestHandler } from "express";
 
 type ErrorData = { [key: string]: any };
 
@@ -35,15 +34,4 @@ export class InvalidTokenError extends CustomError {
   constructor(message = 'Authentication token is invalid.') {
     super(message, 'INVALID_TOKEN', 401);
   }
-}
-
-export const errorWrapper = (requestHandler: RequestHandler): RequestHandler => {
-    const wrapper: RequestHandler = async (req, res, next) => {
-        try {
-            return await requestHandler(req, res, next);
-        } catch (err) {
-            next(err);
-        }
-    };
-    return wrapper;
 }

@@ -39,9 +39,7 @@ const pageRoutes= [
 ]
 
 export const clientSideRoutingHandler: RequestHandler = (req, res, next) => {
-    if (/(.ico|.js|.css|.jpg|.png|.svg|.map)$/i.test(req.path)) {
-        next();
-    } else if (req.path.split('/')[1] === 'api') {
+    if (/(.ico|.js|.css|.jpg|.png|.svg|.map)$/i.test(req.path) || req.path.split('/')[1] === 'auth') {
         next();
     } else {
         try {

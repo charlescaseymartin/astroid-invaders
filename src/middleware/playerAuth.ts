@@ -1,8 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
+import {  } from 'socket.io';
 import { verifyToken } from '../utils/authToken';
 import { Player } from '../database/entities';
-import { InvalidTokenError, errorWrapper } from '../utils/errors';
+import { InvalidTokenError } from '../utils/errors';
 
+
+interface QueryRequest extends Request {
+    _query: Record<string, string>;
+}
 
 const getAuthTokenFromHeaders = (req: Request): string | null => {
     const header = req.get('Authorization') || '';
@@ -10,14 +15,19 @@ const getAuthTokenFromHeaders = (req: Request): string | null => {
     return bearer === 'Bearer' && token ? token : null;
 }
 
-export const authenicatePlayer = errorWrapper(async (req: Request, _res: Response, next: NextFunction) => {
-    const token = getAuthTokenFromHeaders(req);
-    if (!token) throw new InvalidTokenError('Authentication token not found.');
-    const playerId = verifyToken(token).sub;
-    if (!playerId) throw new InvalidTokenError('Authentication token is invalid.');
-    const player = await Player.findOneBy(playerId);
-    if (!player) throw new InvalidTokenError('Authentication token is invalid: User not found.');
-    req.player = player;
-    next();
-});
+export const authenicatePlayer = async (req: QueryRequest, _res: Response, next: NextFunction) => {
+    try {
+        if (req._query.sid === undefined) return next();
+        const token = getAuthTokenFromHeaders(req);
+        if (!token) throw new InvalidTokenError('Authentication token not found.');
+        const playerId = verifyToken(token).sub;
+        if (!playerId) throw new InvalidTokenError('Authentication token is invalid.');
+        const player = await Player.findOneBy(playerId);
+        if (!player) throw new InvalidTokenError('Authentication token is invalid: Player not found.');
+        req.player = player;
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
 
