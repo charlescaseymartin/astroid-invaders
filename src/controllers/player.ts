@@ -1,5 +1,5 @@
 import { Crew, Pilot, Player } from '@entities/index';
-import { findEntityOrThrow, updateEntity } from '../utils/typeorm';
+import { deleteEntity, findEntityOrThrow, updateEntity } from '../utils/typeorm';
 
 
 export const getPlayer = async (playerId: string) => {
@@ -30,6 +30,12 @@ export const updatePilot = async (playerId: string, pilotId: string) => {
 export const updateCrew = async (playerId: string, crewId: string) => {
     const crew = await findEntityOrThrow(Crew, crewId);
     const player = await updateEntity(Player, playerId, { crewId, crew });
+    console.log({ player });
+    return player;
+}
+
+export const deletePlayer = async (playerId: string) => {
+    const player = await deleteEntity(Player, playerId);
     console.log({ player });
     return player;
 }

@@ -11,7 +11,7 @@
     "clean": "rm -rf ./dist ./client/build",
     "start:prod": "NODE_ENV=production yarn clean && yarn build && yarn start",
     "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/index.ts\" \"cd ./client && npm start\"",
-    "test:jest": "jest --forceExit --detectOpenHandles",
+    "test:jest": "PORT=4723 jest --forceExit --detectOpenHandles",
     "typeorm": "typeorm-ts-node-commonjs -d ./src/database/index.ts",
     "migration:show": "yarn typeorm migration:show",
     "migration:generate": "yarn typeorm migration:generate",

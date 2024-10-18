@@ -1,23 +1,34 @@
-import { ReactNode, FC, createContext, useContext, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { ReactNode, FC, createContext, useContext, useReducer, useCallback } from 'react';
+import { Socket } from 'socket.io-client';
+import { contextReducer, ContextActionMap, ContextActions } from './reducer';
 
 
-export type GameSocket = Socket;
-
-export interface AppContextState {
-    socket: GameSocket;
+export type AppContextState = {
+    socket: Socket;
+    authToken: string;
 };
 
-export const AppContext = createContext<AppContextState>({} as AppContextState);
+export type Dispatcher = <T extends ContextActions['type'], P extends ContextActionMap[T]> (
+    type: T,
+    ...payload: P extends undefined ? [undefined?] : [P]
+) => void;
+
+export type AppContextInterface = readonly [AppContextState, Dispatcher];
+
+export const AppContext = createContext<AppContextInterface>([{} as AppContextState, () => { }]);
 
 export const useAppContext = () => useContext(AppContext);
 
 export const AppContextProvider: FC<{ children: ReactNode }> = (props) => {
-    const socket = useRef<GameSocket>(io('http://localhost:8000', { autoConnect: false }));
+    const [state, _dispatch] = useReducer(contextReducer, {} as AppContextState);
+
+    const dispatch: Dispatcher = useCallback((type, ...payload) => {
+        _dispatch({ type, payload: payload[0] } as ContextActions);
+    }, []);
 
     return (
-        <AppContext.Provider value={{ socket: socket.current }}>
-            { props.children }
+        <AppContext.Provider value={[state, dispatch]}>
+            {props.children}
         </AppContext.Provider>
     );
 }

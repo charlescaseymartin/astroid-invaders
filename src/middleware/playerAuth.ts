@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import {  } from 'socket.io';
 import { verifyToken } from '../utils/authToken';
 import { Player } from '../database/entities';
 import { InvalidTokenError } from '../utils/errors';
@@ -7,6 +6,7 @@ import { InvalidTokenError } from '../utils/errors';
 
 interface QueryRequest extends Request {
     _query: Record<string, string>;
+    player: Player;
 }
 
 const getAuthTokenFromHeaders = (req: Request): string | null => {

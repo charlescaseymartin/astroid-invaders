@@ -10,8 +10,7 @@ describe('Testing Websocket Core:', () => {
     let clientSocket: Socket;
 
     beforeAll((done) => {
-        initializeApp()
-            .then((res) => {
+        initializeApp().then((res) => {
                 if (res) {
                     server = res.server;
                     database = res.db;
@@ -26,8 +25,9 @@ describe('Testing Websocket Core:', () => {
 
     afterAll((done) => {
         clientSocket.disconnect();
-        database.destroy();
-        server.close(done);
+        database.destroy().finally(() => {
+            server.close(done);
+        });
     });
 
     test('Test client connection: Should return true.', () => {
