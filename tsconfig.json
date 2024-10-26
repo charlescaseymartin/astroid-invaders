@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.paths.json",
-  "exclude": ["./dist", "./__test__", "./jest.config.js", "./coverage"],
+  "exclude": ["./dist", "./__test__", "./jest.config.js", "./coverage", "./client"],
   "compilerOptions": {
    "target": "es2016",
     "jsx": "react-jsx",

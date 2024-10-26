@@ -1,16 +1,29 @@
-import { ReactNode, FC, createContext, useContext, useReducer, useCallback } from 'react';
+import {
+    ReactNode,
+    FC,
+    createContext,
+    useContext,
+    useReducer,
+    useCallback,
+} from 'react';
 import { Socket } from 'socket.io-client';
 import { contextReducer, ContextActionMap, ContextActions } from './reducer';
 
 
+export enum PlayerMode {
+    pilot = 'PILOT',
+    crew = 'CREW',
+}
+
 export type AppContextState = {
     socket: Socket;
     authToken: string;
+    mode: PlayerMode | undefined;
 };
 
 export type Dispatcher = <T extends ContextActions['type'], P extends ContextActionMap[T]> (
     type: T,
-    ...payload: P extends undefined ? [undefined?] : [P]
+     ...payload: P extends undefined ? [undefined?] : [P]
 ) => void;
 
 export type AppContextInterface = readonly [AppContextState, Dispatcher];
@@ -25,6 +38,7 @@ export const AppContextProvider: FC<{ children: ReactNode }> = (props) => {
     const dispatch: Dispatcher = useCallback((type, ...payload) => {
         _dispatch({ type, payload: payload[0] } as ContextActions);
     }, []);
+
 
     return (
         <AppContext.Provider value={[state, dispatch]}>

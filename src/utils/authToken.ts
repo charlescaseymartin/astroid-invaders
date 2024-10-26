@@ -13,11 +13,11 @@ export const signToken = (payload: object, options?: SignOptions) => (
 
 export const verifyToken = (token: string): { [key: string]: any } => {
     try {
-        if (!secret) throw new Error('Invalid secret.');
+        if (!secret) throw new Error('Invalid JWT secret.');
         const payload = jwt.verify(token, secret);
         const payloadIsPlainObj = !!payload && Object.getPrototypeOf(payload) === Object.prototype;
         if (payloadIsPlainObj) return payload as {[key:string]: any};
-        throw new InvalidTokenError();
+        throw new Error();
     } catch (err) {
         throw new InvalidTokenError();
     }

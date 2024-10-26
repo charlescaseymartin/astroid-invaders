@@ -30,6 +30,12 @@ export class BadUserInputError extends CustomError {
   }
 }
 
+export class UnauthorizedUserError extends CustomError {
+    constructor(message = 'User is not authorized.') {
+        super(message, 'UNAUTHORIZED_USER', 401);
+    }
+}
+
 export class InvalidTokenError extends CustomError {
   constructor(message = 'Authentication token is invalid.') {
     super(message, 'INVALID_TOKEN', 401);

@@ -13,12 +13,28 @@ import websocket from './websocket';
 import { ExpressServerType, InitializeAppType } from './types/common';
 import { authorizePlayer } from './controllers/auth';
 
+import { Player } from './database/entities';
+
+
+declare global {
+    namespace Express {
+        export interface Request {
+            player: Player;
+        }
+    }
+}
+
+declare module 'http' {
+    interface IncomingMessage {
+        player: Player;
+    }
+}
 
 const initialExpressServer = (): ExpressServerType => {
     const app = express();
     const server = createServer(app);
     const port = process.env.PORT;
-    const origin = process.env.NODE_ENV == 'development' ?`${process.env.DOMAIN}:3000` : `${process.env.DOMAIN}:${port}`;
+    const origin = process.env.NODE_ENV == 'development' ? `${process.env.DOMAIN}:3000` : `${process.env.DOMAIN}:${port}`;
     const io = new Server(server, {
         cors: {
             origin,

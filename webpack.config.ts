@@ -32,8 +32,8 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: [
-                    resolve(__dirname, 'node_modules'),
-                    resolve(__dirname, 'client'),
+                    '/node_modules',
+                    '/client',
                 ],
             }
         ]
