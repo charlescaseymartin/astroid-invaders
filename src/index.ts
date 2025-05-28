@@ -33,8 +33,10 @@ declare module 'http' {
 const initialExpressServer = (): ExpressServerType => {
     const app = express();
     const server = createServer(app);
-    const port = process.env.PORT;
-    const origin = process.env.NODE_ENV == 'development' ? `${process.env.DOMAIN}:3000` : `${process.env.DOMAIN}:${port}`;
+    const domain = process.env.DOMAIN || 'http://localhost';
+    const port = process.env.PORT || '3000';
+    const isDevEnv = process.env.NODE_ENV == 'development';
+    const origin = isDevEnv ? `${domain}:3000` : `${domain}:${port}`;
     const io = new Server(server, {
         cors: {
             origin,
@@ -46,7 +48,7 @@ const initialExpressServer = (): ExpressServerType => {
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    app.use(express.static(path.join(__dirname, 'build')));
+    if (!isDevEnv) app.use(express.static(path.join(__dirname, 'build')));
     app.use(clientSideRoutingHandler);
     app.use(errorHandler);
     app.get('/auth', authorizePlayer);

@@ -1,8 +1,6 @@
 {
-  "extends": "./tsconfig.paths.json",
-  "exclude": ["./dist", "./__test__", "./jest.config.js", "./coverage", "./client"],
   "compilerOptions": {
-   "target": "es2016",
+   "target": "ES6",
     "jsx": "react-jsx",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -13,6 +11,15 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "paths": {
+      "@client/*": ["./client/*"],
+      "@entities/*": ["./src/database/entities/*"]
+    }
+  },
+  "exclude": ["./dist", "./node_modules", "./__test__", "./jest.config.js", "./coverage", "./client"],
 }

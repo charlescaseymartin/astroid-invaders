@@ -13,6 +13,7 @@ const Home: FC = () => {
             console.log({ mode, authToken, socket })
             if (!authToken && !socket) {
                 const res = await fetch(`${process.env.REACT_APP_API_URL}/auth`);
+                console.log('auth raw resp:', res);
                 const { token } = await res.json();
                 dispatch('setAuthToken', token);
                 console.log({ token })
