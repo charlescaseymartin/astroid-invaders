@@ -4,6 +4,6 @@ export const createSocket = (authToken: string): Socket => {
     return io(process.env.REACT_APP_API_URL, {
         autoConnect: false,
         withCredentials: true,
-        extraHeaders: { ['Authorization']: `Bearer ${authToken}` },
+        auth: { token: authToken },
     })
 }

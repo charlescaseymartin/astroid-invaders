@@ -10,10 +10,8 @@ const Home: FC = () => {
     const handleSingleplayer = async (_event: MouseEvent) => {
         try {
             dispatch('setMode', PlayerMode.pilot);
-            console.log({ mode, authToken, socket })
             if (!authToken && !socket) {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/auth`);
-                console.log('auth raw resp:', res);
+                const res = await fetch('/auth');
                 const { token } = await res.json();
                 dispatch('setAuthToken', token);
                 console.log({ token })
@@ -57,15 +55,7 @@ const Home: FC = () => {
 
 
     useEffect(() => {
-        if (!mode) return;
-        console.log('mode:', mode)
-
-        if (!authToken) return;
-        console.log('authToken:', authToken)
-
-        if (!socket) return;
-        console.log('socket:', socket)
-
+        if (!mode || !authToken || !socket) return;
         dispatch('connectSocket');
 
         if (mode === PlayerMode.pilot) {
