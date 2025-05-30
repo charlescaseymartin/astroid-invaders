@@ -41,3 +41,9 @@ export class InvalidTokenError extends CustomError {
     super(message, 'INVALID_TOKEN', 401);
   }
 }
+
+export class InvalidAuthModeError extends CustomError {
+  constructor(message = 'Player mode is invalid.') {
+    super(message, 'INVALID_PLAYER_MODE', 401);
+  }
+}

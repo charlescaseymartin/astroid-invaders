@@ -8,7 +8,10 @@ const handler = (io: Server) => {
     io.on('connection', (socket: Socket) => {
         console.log(`${socket.data.player.id} just connected.`);
         console.log(`${socket.id} just connected.`);
-        singleplayerHandler(socket);
+        if (socket.handshake.auth.mode === 'PILOT') {
+            singleplayerHandler(socket);
+        } else {
+        }
         socket.on('disconnect', () => console.log(`${socket.id} disconnected.`));
     });
 

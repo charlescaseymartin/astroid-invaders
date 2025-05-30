@@ -31,6 +31,12 @@ class Player extends BaseEntity {
     @IsOptional()
     @IsString()
     @MaxLength(150)
+    mode: string;
+
+    @Column({ type: 'varchar', length: 150 })
+    @IsOptional()
+    @IsString()
+    @MaxLength(150)
     name?: string;
 
     @Column('integer')

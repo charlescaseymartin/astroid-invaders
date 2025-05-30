@@ -13,23 +13,6 @@ import websocket from './websocket';
 import { ExpressServerType, InitializeAppType } from './types/common';
 import { authorizePlayer } from './controllers/auth';
 
-import { Player } from './database/entities';
-
-
-declare global {
-    namespace Express {
-        export interface Request {
-            player: Player;
-        }
-    }
-}
-
-declare module 'http' {
-    interface IncomingMessage {
-        player: Player;
-    }
-}
-
 const initialExpressServer = (): ExpressServerType => {
     const app = express();
     const server = createServer(app);
@@ -51,7 +34,7 @@ const initialExpressServer = (): ExpressServerType => {
     if (!isDevEnv) app.use(express.static(path.join(__dirname, 'build')));
     app.use(clientSideRoutingHandler);
     app.use(errorHandler);
-    app.get('/auth', authorizePlayer);
+    app.post('/auth/:mode', authorizePlayer);
     websocket(io);
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));

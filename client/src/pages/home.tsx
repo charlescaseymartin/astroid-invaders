@@ -1,7 +1,7 @@
 import { FC, MouseEvent, useCallback, useEffect } from 'react';
-import { PlayerMode, useAppContext } from '../context';
-import { createSocket } from '../utils';
 import { Socket } from 'socket.io-client';
+import { PlayerMode, useAppContext } from '../context';
+import { createSocket, authPlayer } from '../utils';
 
 const Home: FC = () => {
     const [state, dispatch] = useAppContext();
@@ -11,11 +11,9 @@ const Home: FC = () => {
         try {
             dispatch('setMode', PlayerMode.pilot);
             if (!authToken && !socket) {
-                const res = await fetch('/auth');
-                const { token } = await res.json();
+                const token = await authPlayer();
                 dispatch('setAuthToken', token);
-                console.log({ token })
-                const userSocket = createSocket(token);
+                const userSocket = createSocket(token, PlayerMode.pilot);
                 dispatch('setSocket', userSocket);
             };
         } catch (err) {
@@ -31,11 +29,9 @@ const Home: FC = () => {
         dispatch('setMode', PlayerMode.crew);
         try {
             if (!authToken && !socket) {
-                const res = await fetch(`${process.env.REACT_APP_API_URL}/auth`);
-                const { token } = await res.json();
+                const token = await authPlayer();
                 dispatch('setAuthToken', token);
-                console.log({ token })
-                const userSocket = createSocket(token);
+                const userSocket = createSocket(token, PlayerMode.crew);
                 dispatch('setSocket', userSocket);
             };
         } catch (err) {
