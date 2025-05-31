@@ -8,12 +8,14 @@ const Home: FC = () => {
     const { mode, authToken, socket } = state;
 
     const handleSingleplayer = async (_event: MouseEvent) => {
+        const mode = PlayerMode.pilot;
+        dispatch('setMode', mode);
+
         try {
-            dispatch('setMode', PlayerMode.pilot);
             if (!authToken && !socket) {
-                const token = await authPlayer();
+                const token = await authPlayer(mode);
                 dispatch('setAuthToken', token);
-                const userSocket = createSocket(token, PlayerMode.pilot);
+                const userSocket = createSocket(token, mode);
                 dispatch('setSocket', userSocket);
             };
         } catch (err) {
@@ -29,7 +31,7 @@ const Home: FC = () => {
         dispatch('setMode', PlayerMode.crew);
         try {
             if (!authToken && !socket) {
-                const token = await authPlayer();
+                const token = await authPlayer(PlayerMode.crew);
                 dispatch('setAuthToken', token);
                 const userSocket = createSocket(token, PlayerMode.crew);
                 dispatch('setSocket', userSocket);

@@ -5,11 +5,12 @@ import { signToken } from '../utils/authToken';
 import { InvalidAuthModeError } from '../utils/errors';
 
 export const authorizePlayer: RequestHandler = async (req, res, next) => {
-    const mode = req.params.mode;
-    if (!mode || mode === '') next(new InvalidAuthModeError());
+    const mode = req.query.mode || undefined;
+    console.log({ mode })
+    if (!mode) next(new InvalidAuthModeError());
 
     try {
-        const player = await createEntity(Player, { score: 0, mode });
+        const player = await createEntity(Player, { score: 0, mode: mode as string });
         const token = signToken({ id: player.id });
         res.status(200).json({ token });
     } catch (err) {

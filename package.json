@@ -18,7 +18,7 @@
     "migration:create": "typeorm migration:create",
     "migration:run": "yarn typeorm migration:run",
     "migration:revert": "yarn typeorm migration:revert",
-    "migration:drop": "yarn typeorm migration:drop",
+    "schema:drop": "yarn typeorm schema:drop",
     "schema:sync": "yarn typeorm schema:sync",
     "schema:log": "yarn typeorm schema:log"
   },

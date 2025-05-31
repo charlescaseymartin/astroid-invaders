@@ -34,7 +34,7 @@ const initialExpressServer = (): ExpressServerType => {
     if (!isDevEnv) app.use(express.static(path.join(__dirname, 'build')));
     app.use(clientSideRoutingHandler);
     app.use(errorHandler);
-    app.post('/auth/:mode', authorizePlayer);
+    app.post('/auth', authorizePlayer);
     websocket(io);
     if (process.env.NODE_ENV !== 'test') {
         server.listen(port, () => console.log(`\nServer is listening on port: ${port}...\n`));
