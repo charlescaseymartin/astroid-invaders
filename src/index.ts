@@ -17,7 +17,7 @@ const initialExpressServer = (): ExpressServerType => {
     const app = express();
     const server = createServer(app);
     const domain = process.env.DOMAIN || 'http://localhost';
-    const port = process.env.PORT || '3000';
+    const port = process.env.PORT || '5000';
     const isDevEnv = process.env.NODE_ENV == 'development';
     const origin = isDevEnv ? `${domain}:3000` : `${domain}:${port}`;
     const io = new Server(server, {

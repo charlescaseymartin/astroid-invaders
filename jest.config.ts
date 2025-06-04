@@ -1,5 +1,5 @@
 import { JestConfigWithTsJest, pathsToModuleNameMapper } from 'ts-jest';
-import { compilerOptions } from './tsconfig.paths.json';
+import { compilerOptions } from './tsconfig.json';
 
 const config: JestConfigWithTsJest = {
     testEnvironment: 'node',
