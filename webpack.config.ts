@@ -1,13 +1,14 @@
 import { resolve, parse } from 'path';
 import { readdirSync } from 'fs';
+import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import CopyFiles from 'copy-webpack-plugin';
 
 
-const getMigrationEntries = () => {
-    const dir = resolve(__dirname, 'src', 'database', 'migrations');
+const getDatabaseRelatedEntries = (sourceFolder: string) => {
+    const dir = resolve(__dirname, 'src', 'database', sourceFolder);
     return readdirSync(dir).reduce((acc, file) => {
-        const key = `migrations/${file.replace(parse(file).ext, '')}`;
+        const key = `db/${sourceFolder}/${file.replace(parse(file).ext, '')}`;
         return {
             ...acc,
             [key]: resolve(dir, file),
@@ -18,7 +19,9 @@ const getMigrationEntries = () => {
 module.exports = {
     entry: {
         index: './src/index.ts',
-        ...getMigrationEntries()
+        ['db/index']: './src/database/index.ts',
+        ...getDatabaseRelatedEntries('migrations'),
+        ...getDatabaseRelatedEntries('entities'),
     },
     target: 'node',
     mode: 'production',
@@ -33,6 +36,7 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: [
                     '/node_modules',
+                    '/src/test',
                     '/client',
                 ],
             }
@@ -49,7 +53,6 @@ module.exports = {
     output: {
         path: resolve(__dirname, 'dist'),
         filename: '[name].js',
-        libraryTarget: 'umd',
     },
     optimization: {
         minimize: false,
