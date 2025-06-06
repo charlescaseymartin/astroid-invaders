@@ -1,14 +1,13 @@
 import { resolve, parse } from 'path';
 import { readdirSync } from 'fs';
-import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import CopyFiles from 'copy-webpack-plugin';
 
 
-const getDatabaseRelatedEntries = (sourceFolder: string) => {
-    const dir = resolve(__dirname, 'src', 'database', sourceFolder);
+const getMigrationEntries = () => {
+    const dir = resolve(__dirname, 'src', 'database', 'migrations');
     return readdirSync(dir).reduce((acc, file) => {
-        const key = `db/${sourceFolder}/${file.replace(parse(file).ext, '')}`;
+        const key = `db/migrations/${file.replace(parse(file).ext, '')}`;
         return {
             ...acc,
             [key]: resolve(dir, file),
@@ -20,8 +19,7 @@ module.exports = {
     entry: {
         index: './src/index.ts',
         ['db/index']: './src/database/index.ts',
-        ...getDatabaseRelatedEntries('migrations'),
-        ...getDatabaseRelatedEntries('entities'),
+        ...getMigrationEntries(),
     },
     target: 'node',
     mode: 'production',
@@ -36,6 +34,7 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: [
                     '/node_modules',
+                    '/jest.config.ts',
                     '/src/test',
                     '/client',
                 ],
@@ -51,10 +50,13 @@ module.exports = {
         })
     ],
     output: {
+        filename: '[name].bundle.js',
         path: resolve(__dirname, 'dist'),
-        filename: '[name].js',
     },
     optimization: {
         minimize: false,
+        splitChunks: {
+            chunks: 'all',
+        },
     },
 };
